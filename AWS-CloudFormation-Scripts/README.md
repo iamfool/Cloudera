@@ -1,4 +1,4 @@
-
+﻿
 
 cloudera-director-2.1.0-basic-public-network.yaml
 	Description: setup a VPC + Security Group + Instance on AWS for Cloudera Director. It shall also launch install script on CentOS to install Director 2.1.0.
