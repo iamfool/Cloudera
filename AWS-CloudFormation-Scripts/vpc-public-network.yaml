@@ -14,7 +14,6 @@
         "z": 0,
         "embeds": [
           "2b10096e-aa38-467a-9c40-2832baf431fe",
-          "4a312a6a-5513-4b17-9604-75382b859057",
           "ac44168e-5a52-450d-b218-ac6b62d80dcf"
         ]
       },
@@ -26,40 +25,6 @@
         "position": {
           "x": 700,
           "y": 330
-        },
-        "z": 1,
-        "parent": "1ed023b9-9f35-437e-83d3-d1a643a22aa1",
-        "embeds": [
-          "f863e2f0-cce1-428d-8bfc-ff115829f38a"
-        ]
-      },
-      "f863e2f0-cce1-428d-8bfc-ff115829f38a": {
-        "size": {
-          "width": 60,
-          "height": 60
-        },
-        "position": {
-          "x": 722.8766947843291,
-          "y": 385.73211817233977
-        },
-        "z": 2,
-        "parent": "ac44168e-5a52-450d-b218-ac6b62d80dcf",
-        "embeds": [],
-        "dependson": [
-          "ea6e9196-287c-44f6-bf41-2995092a3170"
-        ],
-        "isrelatedto": [
-          "4a312a6a-5513-4b17-9604-75382b859057"
-        ]
-      },
-      "4a312a6a-5513-4b17-9604-75382b859057": {
-        "size": {
-          "width": 60,
-          "height": 60
-        },
-        "position": {
-          "x": 590,
-          "y": 380
         },
         "z": 1,
         "parent": "1ed023b9-9f35-437e-83d3-d1a643a22aa1",
@@ -172,7 +137,9 @@
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "UserName"
+            }
           }
         ]
       },
@@ -196,7 +163,9 @@
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "UserName"
+            }
           }
         ]
       },
@@ -205,128 +174,6 @@
           "id": "ac44168e-5a52-450d-b218-ac6b62d80dcf"
         }
       }
-    },
-    "DirectorSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "aheib-director-secgroup"
-          },
-          {
-            "Key": "Owner",
-            "Value": "aheib"
-          }
-        ],
-        "GroupDescription": "Allow access from SSH, HTTP, HTTPS and Director TCP traffic",
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "22",
-            "ToPort": "22",
-            "CidrIp": {
-              "Ref": "SSHLocation"
-            }
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "80",
-            "ToPort": "80",
-            "CidrIp": {
-              "Ref": "SSHLocation"
-            }
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "443",
-            "ToPort": "443",
-            "CidrIp": {
-              "Ref": "SSHLocation"
-            }
-          },
-          {
-            "IpProtocol": "tcp",
-            "FromPort": "7189",
-            "ToPort": "7189",
-            "CidrIp": {
-              "Ref": "SSHLocation"
-            }
-          }
-        ]
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "4a312a6a-5513-4b17-9604-75382b859057"
-        }
-      }
-    },
-    "Director": {
-      "Type": "AWS::EC2::Instance",
-      "Properties": {
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "aheib-director-2.1.0"
-          },
-          {
-            "Key": "Owner",
-            "Value": "aheib"
-          }
-        ],
-        "InstanceType": {
-          "Ref": "DirectorInstanceType"
-        },
-        "ImageId": {
-          "Ref": "CentOSImageType"
-        },
-        "KeyName": {
-          "Ref": "KeyName"
-        },
-        "NetworkInterfaces": [
-          {
-            "GroupSet": [
-              {
-                "Ref": "DirectorSecurityGroup"
-              }
-            ],
-            "AssociatePublicIpAddress": "true",
-            "DeviceIndex": "0",
-            "DeleteOnTermination": "true",
-            "SubnetId": {
-              "Ref": "PublicSubnet"
-            }
-          }
-        ],
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "#!/bin/bash \n",
-                "yum install -y wget \n",
-                "wget --directory-prefix=/etc/yum.repos.d/ http://archive.cloudera.com/director/redhat/6/x86_64/director/cloudera-director.repo \n",
-                "yum update -y \n",
-                "wget --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm \n",
-                "yum localinstall -y jdk-8u102-linux-x64.rpm \n",
-                "yum install -y cloudera-director-server cloudera-director-client \n",
-                "service cloudera-director-server start \n"
-              ]
-            ]
-          }
-        }
-      },
-      "Metadata": {
-        "AWS::CloudFormation::Designer": {
-          "id": "f863e2f0-cce1-428d-8bfc-ff115829f38a"
-        }
-      },
-      "DependsOn": [
-        "PublicRoute"
-      ]
     },
     "EC2IGDG8S": {
       "Type": "AWS::EC2::InternetGateway",
@@ -338,7 +185,9 @@
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "UserName"
+            }
           }
         ]
       },
@@ -415,37 +264,12 @@
     }
   },
   "Parameters": {
-    "DirectorInstanceType": {
-      "Description": "Director EC2 instance type",
+    "UserName": {
+      "Description": "UserName used for the entire Stack",
       "Type": "String",
-      "Default": "c4.large",
-      "AllowedValues": [
-        "c3.large",
-        "c4.large"
-      ],
-      "ConstraintDescription": "must be a valid EC2 instance type."
+      "Default": "aheib",
+      "ConstraintDescription": "All VPC, Subnet, KeyPair, Instances will be named with UserName prefix and tagged w/ Owner = UserName"
     },
-    "CentOSImageType": {
-      "Description": "CentOS 7.0 AMI type",
-      "Type": "String",
-      "Default": "ami-7abd0209",
-      "ConstraintDescription": "must be a valid AMI image."
-    },
-    "KeyName": {
-      "Description": "Name of an EC2 KeyPair to enable SSH access to the instance.",
-      "Type": "AWS::EC2::KeyPair::KeyName",
-      "Default": "aheib-keypair",
-      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
-    },
-    "SSHLocation": {
-      "Description": " The IP address range that can be used to access the web server using SSH.",
-      "Type": "String",
-      "MinLength": "9",
-      "MaxLength": "18",
-      "Default": "0.0.0.0/0",
-      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
-    }
   },
   "Mappings": {},
   "Outputs": {}

@@ -1,0 +1,118 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Metadata": {
+    "AWS::CloudFormation::Designer": {
+      "23c35fb1-1deb-49cd-b70a-840562020691": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 446,
+          "y": 124
+        },
+        "z": 0,
+        "embeds": []
+      }
+    }
+  },
+  "Resources": {
+    "EC2I3VJV4": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Director-2.1.0"
+          },
+          {
+            "Key": "Owner",
+            "Value": "aheib"
+          }
+        ],
+        "InstanceType": {
+          "Ref": "DirectorInstanceType"
+        },
+        "ImageId": {
+          "Ref": "CentOSImageType"
+        },
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "NetworkInterfaces": [
+          {
+            "GroupSet": [
+              {
+                "Ref": "DirectorSecurityGroup"
+              }
+            ],
+            "AssociatePublicIpAddress": "true",
+            "DeviceIndex": "0",
+            "DeleteOnTermination": "true",
+            "SubnetId": {
+              "Ref": "DirectorPublicSubnet"
+            }
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash \n",
+                "yum install -y wget \n",
+                "wget --directory-prefix=/etc/yum.repos.d/ http://archive.cloudera.com/director/redhat/6/x86_64/director/cloudera-director.repo \n",
+                "yum update -y \n",
+                "wget --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm \n",
+                "yum localinstall -y jdk-8u102-linux-x64.rpm \n",
+                "yum install -y cloudera-director-server cloudera-director-client \n",
+                "service cloudera-director-server start \n"
+              ]
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "23c35fb1-1deb-49cd-b70a-840562020691"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "DirectorInstanceType": {
+      "Description": "Director EC2 instance type",
+      "Type": "String",
+      "Default": "c4.large",
+      "AllowedValues": [
+        "c3.large",
+        "c4.large"
+      ],
+      "ConstraintDescription": "must be a valid EC2 instance type."
+    },
+    "CentOSImageType": {
+      "Description": "CentOS 7.0 AMI type",
+      "Type": "String",
+      "Default": "ami-7abd0209",
+      "ConstraintDescription": "must be a valid AMI image."
+    },
+    "KeyName": {
+      "Description": "Name of an EC2 KeyPair to enable SSH access to the instance.",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Default": "aheib-keypair",
+      "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+    },
+    "DirectorPublicSubnet": {
+      "Description": "The subnet from which a dynamic fixed IP will be allocated.",
+      "Type": "String",
+      "Default": "subnet-40274624",
+      "ConstraintDescription": "must be the name of an existing Subnet."
+    },
+    "DirectorSecurityGroup": {
+      "Description": "The Security Group rules associated w/ Director.",
+      "Type": "String",
+      "Default": "aheib-director-secgroup",
+      "ConstraintDescription": "must be the name of an existing Subnet."
+    },
+  }
+}
