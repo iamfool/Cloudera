@@ -465,13 +465,13 @@
   },
   "Mappings": {},
   "Outputs": {
-    "Instance-ID": {
+    "InstanceID": {
       "Description": "The Instance ID",
       "Value": {
         "Ref": "Director"
       }
     },
-    "VPC-ID": {
+    "VPCID": {
       "Description": "The VPC ID",
       "Value": {
         "Ref": "VPC"
