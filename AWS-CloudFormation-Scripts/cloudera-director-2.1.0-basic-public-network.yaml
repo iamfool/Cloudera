@@ -289,7 +289,7 @@
           "Ref": "DirectorInstanceType"
         },
         "ImageId": {
-          "Ref": "CentOSImageType"
+          "Ref": "ImageType"
         },
         "KeyName": {
           "Ref": "KeyName"
