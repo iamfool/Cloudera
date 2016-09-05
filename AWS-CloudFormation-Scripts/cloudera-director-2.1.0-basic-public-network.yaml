@@ -168,11 +168,13 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "aheib-VPC"
+            "Value": "VPC"
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "Owner"
+            }
           }
         ]
       },
@@ -192,11 +194,13 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "aheib-public-subnet"
+            "Value": "public-subnet"
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "Owner"
+            }
           }
         ]
       },
@@ -215,11 +219,13 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "aheib-director-secgroup"
+            "Value": "director-secgroup"
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "Owner"
+            }
           }
         ],
         "GroupDescription": "Allow access from SSH, HTTP, HTTPS and Director TCP traffic",
@@ -270,11 +276,13 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "aheib-director-2.1.0"
+            "Value": "director-2.1.0"
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "Owner"
+            }
           }
         ],
         "InstanceType": {
@@ -334,11 +342,13 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "aheib-internet-gateway"
+            "Value": "internet-gateway"
           },
           {
             "Key": "Owner",
-            "Value": "aheib"
+            "Value": {
+              "Ref": "Owner"
+            }
           }
         ]
       },
@@ -415,6 +425,12 @@
     }
   },
   "Parameters": {
+    "Owner": {
+      "Description": "AWS Owner username",
+      "Type": "String",
+      "Default": "aheib",
+      "ConstraintDescription": "must be a valid username."
+    },
     "DirectorInstanceType": {
       "Description": "Director EC2 instance type",
       "Type": "String",
@@ -425,7 +441,7 @@
       ],
       "ConstraintDescription": "must be a valid EC2 instance type."
     },
-    "CentOSImageType": {
+    "ImageType": {
       "Description": "CentOS 7.0 AMI type",
       "Type": "String",
       "Default": "ami-7abd0209",
